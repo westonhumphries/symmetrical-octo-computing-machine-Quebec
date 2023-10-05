@@ -1,0 +1,23 @@
+<%- include('partials/html-head') %>
+
+
+
+<h1>Update your Profile Name</h1>
+
+<%= profileDataId %>
+
+<form action="/updateProfile" method="POST">
+          
+  <input type="hidden" id="devId" name="devdevIdName" value="<%= profileDataId %> "></input>
+  
+    <input type="text" id="devName" name="devName" value="<%= profileDataName %> "></input>
+
+    <button class="btn btn-primary" type="submit">Update Dev Name</button>
+
+  </form>
+
+
+<% console.log("where am I?") %> 
+
+
+</html>
