@@ -36,13 +36,9 @@ async function run() {
 async function cxnDB(){
 
   try{
-    client.connect; 
-    const collection = client.db("humphries-cool-papa-database").collection("dev-profiles");
-    // const collection = client.db("papa").collection("dev-profiles");
-    const result = await collection.find().toArray();
-    //const result = await collection.findOne(); 
-    console.log("cxnDB result: ", result);
-    return result; 
+    await client.connect().then(
+      client.db("humphries-cool-papa-database").collection("dev-profiles")
+      );       
   }
   catch(e){
       console.log(e)
@@ -55,43 +51,102 @@ async function cxnDB(){
 
 app.get('/', async (req, res) => {
 
-  let result = await cxnDB().catch(console.error); 
-
-  // console.log("get/: ", result);
-
+ client.connect;
+  let mongoResult = await client.db("humphries-cool-papa-database").collection("dev-profiles").find().toArray();
+// console.log("get/: ", result);
+console.log(mongoResult);
   //'res.send("here for a second: " + result[0].name)
   res.render('index', { 
-    profileDataId : result[0]._id, 
-    profileDataName : result[0].name 
-    })
+    profileData : mongoResult })
 })
 
+// Update Database
 app.post('/updateProfile', async (req, res) => {
 
-  client.connect; 
-  const collection = client.db("humphries-cool-papa-database").collection("dev-profiles");
-
-  //get the new dev name
-  console.log("body: ", req.body)
-  console.log("user Name: ", req.body.devName)
+  try {
+    //get the new dev name
+    console.log("body: ", req.body)
+    console.log("user Name: ", req.body.devName)
+    
+    client.connect; 
+    const collection = client.db("humphries-cool-papa-database").collection("dev-profiles");
   
-  // put it into mongo
-  let result = await collection.findOneAndUpdate( 
-    { _id: new ObjectId( req.body.devId)},
-    {$set: {name: req.body.devName }}); 
-
-  res.redirect("/"); 
-
-  // res.send("check oyur server console ")
-  // head back to our page 
-
-  //  res.render('index', {  peopleData : result })
+    // put it into mongo
+    let result = await collection.findOneAndUpdate( 
+      { _id: new ObjectId( req.body.devId ) },
+      {$set: {name: req.body.devName }})
+      .then(result => {
+        console.log(result); 
+        res.redirect('/');
+      })
+      .catch(error => console.error(error))
+     
+   
+  }
+  finally{
+    //client.close()
+  }
 })
 
+
+// Insert users into database
+app.post('/insertProfile', async (req, res) => {
+
+  try {
+    //get the new dev name
+    console.log("body: ", req.body)
+    console.log("user Name: ", req.body.devName)
+    
+    client.connect; 
+    const collection = client.db("humphries-cool-papa-database").collection("dev-profiles");
+  
+    // put it into mongo
+    let result = await collection.insertOne( 
+      { name: req.body.newDevName })
+      .then(result => {
+        console.log(result); 
+        res.redirect('/');
+      })
+      .catch(error => console.error(error))
+     
+   
+  }
+  finally{
+    //client.close()
+  }
+})
+
+
+// delete users from database
+app.post('/deleteProfile', async (req, res) => {
+
+  try {
+    //get the new dev name
+    console.log("body: ", req.body)
+    console.log("user Name: ", req.body.devName)
+    
+    client.connect; 
+    const collection = client.db("humphries-cool-papa-database").collection("dev-profiles");
+  
+    // put it into mongo
+    let result = await collection.findOneAndDelete( 
+      { _id: new ObjectId( req.body.devId) })
+      .then(result => {
+        console.log(result); 
+        res.redirect('/');
+      })
+      .catch(error => console.error(error))
+     
+   
+  }
+  finally{
+    //client.close()
+  }
+})
 
 let myVariableServer = 'soft coded server data';
 
-app.get('/weston', function (req, res) {
+app.get('/humphries', function (req, res) {
   res.render('index', 
   {
     'myVariableClient' : myVariableServer 

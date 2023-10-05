@@ -1,23 +1,44 @@
 <%- include('partials/html-head') %>
 
 
-
-<h1>Update your Profile Name</h1>
-
-<%= profileDataId %>
-
-<form action="/updateProfile" method="POST">
-          
-  <input type="hidden" id="devId" name="devdevIdName" value="<%= profileDataId %> "></input>
-  
-    <input type="text" id="devName" name="devName" value="<%= profileDataName %> "></input>
-
-    <button class="btn btn-primary" type="submit">Update Dev Name</button>
-
-  </form>
+<body class="container-fluid">
 
 
-<% console.log("where am I?") %> 
+<div class="row">
+  <div class="col-md-6">
+    <h1>Update your Profile Name</h1>
+
+    <%= console.log(profileData) %>
+    
+    <% for (var i=0; i< profileData.length; i++ ) { %>
+      <form method="POST">  
+        <input type="hidden" id="devId" name="devId" value="<%= profileData[i]._id %>"></input>
+        <input type="text" id="devName" name="devName" value="<%= profileData[i].name %>"></input>
+        
+        <button class="btn btn-info" type="submit" formaction="/updateProfile">Update Dev Name</button>
+        <button class="btn btn-danger" type="submit" formaction="/deleteProfile">Delete Dev </button>
+      
+      </form>
+      <br/>
+      <% } %> 
+  </div>
 
 
+  <div class="col-md-6">
+
+  <h2> new dev here!</h2>
+
+    <form action="/insertProfile" method="POST">
+                
+      <input type="text" id="newDevName" name="newDevName" placeholder="new dev go here"></input>
+
+      <button class="btn btn-success" type="submit">Insert New Dev Name</button>
+
+    </form>
+
+  </div>
+</div>
+
+
+</body>
 </html>
