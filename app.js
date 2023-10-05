@@ -69,7 +69,7 @@ app.get('/', async (req, res) => {
 app.post('/updateProfile', async (req, res) => {
 
   client.connect; 
-  const collection = client.db("barrys-cool-papa-database").collection("dev-profiles");
+  const collection = client.db("humphries-cool-papa-database").collection("dev-profiles");
 
   //get the new dev name
   console.log("body: ", req.body)
@@ -91,7 +91,7 @@ app.post('/updateProfile', async (req, res) => {
 
 let myVariableServer = 'soft coded server data';
 
-app.get('/barry', function (req, res) {
+app.get('/weston', function (req, res) {
   res.render('index', 
   {
     'myVariableClient' : myVariableServer 
